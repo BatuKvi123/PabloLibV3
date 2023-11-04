@@ -6,7 +6,7 @@ function tween(object, goal, callback)
 	tween:Play()
 end
 local mouse = game.Players.LocalPlayer:GetMouse()
-
+local ch = game.Players.LocalPlayer.Character
 
 local library = {}
 
@@ -30,11 +30,8 @@ function library:Create(text)
 	Main.Active = true
 	Main.Selectable = true
 	Main.Draggable = true
-	mouse.KeyDown:Connect(function(k)
-		if k == "p" then
-			Main.Visible = not Main.Visible
-		end
-	end)
+	
+	
 	
 	local UICorner = Instance.new("UICorner")
 	UICorner.Parent = Main
@@ -140,8 +137,12 @@ function library:Create(text)
 	local Containers = Instance.new("Folder")
 	Containers.Name = "Containers"
 	Containers.Parent = TabsFrame
-	
+	function library:Close()
+		Main:Destroy()
+	end
 	local InsideLibrary = {}
+	
+	
 	function InsideLibrary:CreateTab(text)
 		local tabButton = Instance.new("TextButton")
 		tabButton.Name = text.. " tabButton"
@@ -779,8 +780,8 @@ callback = callback or function() end
 			UIPadding.PaddingTop = UDim.new(0, 6)
 		end
 		return sS
+		
 	end
 	return InsideLibrary
 end
-
 return library
