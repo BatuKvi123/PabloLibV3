@@ -233,7 +233,13 @@ function library:Create(text)
 			end
 			Container2.Visible = true
 		end)
+		
+		
 		local sS = {}
+		function sS:DeleteTab()
+			Container2:Destroy()
+			tabButton:Destroy()
+		end
 		function sS:CreateButton(text, callback)
 			local Button = Instance.new("Frame")
 			Button.Name = text
@@ -301,6 +307,11 @@ function library:Create(text)
 			UIST.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 			
 			ButtonPress.MouseButton1Click:Connect(callback)
+			local delete = {}
+			function delete:Delete()
+				Button:Destroy()
+			end
+			return delete
 		end
 		function sS:CreateToggle(text, callback)
 			text = text or ""
@@ -427,6 +438,11 @@ function library:Create(text)
 					tween(UIST2, {Color = Color3.fromRGB(93,93,93)})
 				end
 			end)
+			local delete = {}
+			function delete:Delete()
+				Toggle:Destroy()
+			end
+			return delete
 		end
 		function sS:CreateSlider(text, minvalue, maxvalue, callback)
 			text = text or "Slider"
@@ -571,6 +587,11 @@ function library:Create(text)
 					end
 				end)
 			end)
+			local delete = {}
+			function delete:Delete()
+				Slider:Destroy()
+			end
+			return delete
 		end
 		function sS:CreateTextbox(text, callback)
 			text = text or "Textbox"
@@ -639,12 +660,14 @@ callback = callback or function() end
 			Input.FocusLost:Connect(function()
 				callback(Input.Text)
 			end)
+			local delete = {}
+			function delete:Delete()
+				Textbox:Destroy()
+			end
+			return delete
 		end
 		function sS:CreateLabel(text)
-			-- Gui to Lua
-			-- Version: 3.2
-
-			-- Instances:
+			
 
 			local Label = Instance.new("Frame")
 			local UICorner = Instance.new("UICorner")
@@ -684,6 +707,11 @@ callback = callback or function() end
 			UIPadding.PaddingLeft = UDim.new(0, 6)
 			UIPadding.PaddingRight = UDim.new(0, 6)
 			UIPadding.PaddingTop = UDim.new(0, 6)
+			local delete = {}
+			function delete:Delete()
+				Label:Destroy()
+			end
+			return delete
 		end
 		function sS:CreateInfo(text)
 			-- Gui to Lua
@@ -731,6 +759,11 @@ callback = callback or function() end
 			UIPadding.PaddingLeft = UDim.new(0, 6)
 			UIPadding.PaddingRight = UDim.new(0, 6)
 			UIPadding.PaddingTop = UDim.new(0, 6)
+			local delete = {}
+			function delete:Delete()
+				Info:Destroy()
+			end
+			return delete
 		end
 		function sS:CreateWarning(text)
 			-- Gui to Lua
@@ -778,6 +811,11 @@ callback = callback or function() end
 			UIPadding.PaddingLeft = UDim.new(0, 6)
 			UIPadding.PaddingRight = UDim.new(0, 6)
 			UIPadding.PaddingTop = UDim.new(0, 6)
+			local delete = {}
+			function delete:Delete()
+				Warning:Destroy()
+			end
+			return delete
 		end
 		return sS
 		
