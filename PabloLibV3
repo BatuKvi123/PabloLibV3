@@ -1,3 +1,7 @@
+--[[
+
+--]]
+
 local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
 local tweenService = game:GetService("TweenService")
 function tween(object, goal, callback)
@@ -10,7 +14,9 @@ local ch = game.Players.LocalPlayer.Character
 
 local library = {}
 
-function library:Create(text)
+function library:Create(text, draggable, keybind)
+	keybind = keybind or "p"
+	
 	local newUI = Instance.new("ScreenGui")
 	local Main = Instance.new("Frame")
 	
@@ -27,9 +33,6 @@ function library:Create(text)
 	Main.ClipsDescendants = true
 	Main.Position = UDim2.new(0.498771489, 0, 0.526052117, 0)
 	Main.Size = UDim2.new(0, 382, 0, 297)
-	Main.Active = true
-	Main.Selectable = true
-	Main.Draggable = true
 	
 	
 	
@@ -140,6 +143,22 @@ function library:Create(text)
 	function library:Close()
 		Main:Destroy()
 	end
+	
+	if draggable == "Enabled" then
+		Main.Active = true
+		Main.Selectable = true
+		Main.Draggable = true
+	elseif draggable == "Disabled" then
+		Main.Active = false
+		Main.Selectable = false
+		Main.Draggable = false
+	end
+	
+	mouse.KeyDown:Connect(function(key)
+		if key == keybind then
+			Main.Visible = not Main.Visible
+		end
+	end)
 	local InsideLibrary = {}
 	
 	
@@ -240,6 +259,14 @@ function library:Create(text)
 			Container2:Destroy()
 			tabButton:Destroy()
 		end
+		
+		function sS:ClearTabElements()
+			for i,v in pairs(Container2:GetChildren()) do
+				v:Destroy()
+			end
+		end
+		
+		
 		function sS:CreateButton(text, callback)
 			local Button = Instance.new("Frame")
 			Button.Name = text
