@@ -140,10 +140,16 @@ function library:Create(text, draggable, keybind)
 	local Containers = Instance.new("Folder")
 	Containers.Name = "Containers"
 	Containers.Parent = TabsFrame
+	
+	
+	--Extra Scripts
+	
+	--Close The Lib
 	function library:Close()
 		Main:Destroy()
 	end
 	
+	--Draggable
 	if draggable == "Enabled" then
 		Main.Active = true
 		Main.Selectable = true
@@ -154,11 +160,18 @@ function library:Create(text, draggable, keybind)
 		Main.Draggable = false
 	end
 	
+	--Key bind
 	mouse.KeyDown:Connect(function(key)
 		if key == keybind then
 			Main.Visible = not Main.Visible
 		end
 	end)
+	
+	--update title
+	local function UpdateTitle(t)
+		t = t or "Updated Title"
+		Title.Text = t
+	end
 	local InsideLibrary = {}
 	
 	
@@ -326,13 +339,13 @@ function library:Create(text, draggable, keybind)
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = 14.000
 			Title.TextXAlignment = Enum.TextXAlignment.Left
-			
+			--[[
 			local UIST = Instance.new("UIStroke")
 			UIST.Parent = ButtonPress
 			UIST.Thickness = 1
 			UIST.Color = Color3.fromRGB(81,81,81)
 			UIST.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-			
+			--]]
 			ButtonPress.MouseButton1Click:Connect(callback)
 			local delete = {}
 			function delete:Delete()
@@ -843,6 +856,110 @@ callback = callback or function() end
 				Warning:Destroy()
 			end
 			return delete
+		end
+		
+		function sS:CreateDropdown(text, options, callback)
+			local Dropdown = Instance.new("Frame")
+			Dropdown.Name = text .. " Dropdown"
+			Dropdown.Parent = scrollTab
+			
+			local UICorner_1 = Instance.new("UICorner")
+			UICorner_1.CornerRadius = UDim.new(0, 9)
+			UICorner_1.Parent = Dropdown
+
+			Dropdown.BackgroundTransparency = 0
+			Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+			Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Dropdown.BorderSizePixel = 0
+			Dropdown.Position = UDim2.new(0, 0, 0.0799999982, 0)
+			Dropdown.Size = UDim2.new(0, 340, 0, 38)
+
+			
+
+			local DropdownTextLabel = Instance.new("TextLabel")
+			DropdownTextLabel.Name = "DropdownTextLabel"
+			DropdownTextLabel.Parent = Dropdown
+			DropdownTextLabel.BackgroundTransparency = 1
+			DropdownTextLabel.Size = UDim2.new(1, -20, 1, 0)
+			DropdownTextLabel.Position = UDim2.new(0, 0, 0, 0)
+			DropdownTextLabel.Font = Enum.Font.Gotham
+			DropdownTextLabel.Text = text
+			DropdownTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+			DropdownTextLabel.TextSize = 14
+			DropdownTextLabel.TextWrapped = true
+
+			local DropButton = Instance.new("TextButton")
+			DropButton.Name = "DropButton"
+			DropButton.Parent = Dropdown
+			DropButton.BackgroundTransparency = 0
+			DropButton.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+			DropButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			DropButton.BorderSizePixel = 0
+			DropButton.Position = UDim2.new(1, -20, 0, 0)
+			DropButton.Size = UDim2.new(0, 20, 0, 38)
+			DropButton.Font = Enum.Font.Gotham
+			DropButton.Text = "▼"
+			DropButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			DropButton.TextSize = 14
+			
+			
+
+			local OptionsContainer = Instance.new("Frame")
+			OptionsContainer.Name = "OptionsContainer"
+			OptionsContainer.Parent = Dropdown.Parent
+			OptionsContainer.Position = UDim2.new(0, 0, 1, 0)
+			OptionsContainer.Size = UDim2.new(0, 340, 0, 0)
+			OptionsContainer.BackgroundTransparency = 1
+
+			local OptionsFrame = Instance.new("Frame")
+			OptionsFrame.Name = "OptionsFrame"
+			OptionsFrame.Parent = OptionsContainer
+			OptionsFrame.BackgroundTransparency = 0
+			OptionsFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+			OptionsFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			OptionsFrame.BorderSizePixel = 0
+			OptionsFrame.Size = UDim2.new(1, 0, 1, 0)
+			OptionsFrame.Visible = false
+
+			local UIListLayout = Instance.new("UIListLayout")
+			UIListLayout.Parent = OptionsFrame
+			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			UIListLayout.Padding = UDim.new(0, 5)
+
+			local function updateOptions()
+				for _, optionText in ipairs(options) do
+					local OptionButton = Instance.new("TextButton")
+					OptionButton.Name = optionText .. " OptionButton"
+					OptionButton.Parent = OptionsFrame
+					OptionButton.BackgroundTransparency = 0
+					OptionButton.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+					OptionButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					OptionButton.BorderSizePixel = 0
+					OptionButton.Size = UDim2.new(1, 0, 0, 30)
+					OptionButton.Font = Enum.Font.Gotham
+					OptionButton.Text = optionText
+					OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+					OptionButton.TextSize = 14
+
+					OptionButton.MouseButton1Click:Connect(function()
+						callback(optionText)
+					end)
+				end
+			end
+
+			DropButton.MouseButton1Click:Connect(function()
+				local dropdownHeight = #options * 35
+				OptionsFrame.Visible = not OptionsFrame.Visible
+				if OptionsFrame.Visible then
+					OptionsFrame.Size = UDim2.new(0, 340, 0, dropdownHeight)
+					updateOptions()
+					OptionsContainer.Size = UDim2.new(0, 340, 0, dropdownHeight)
+				else
+					OptionsContainer.Size = UDim2.new(0, 340, 0, 0)
+				end
+			end)
+
+			return Dropdown
 		end
 		return sS
 		
